@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SqlServerDataAccess.Models.Currency>
+
+@Html.Hidden("NotifierEntity", (object)ViewBag.NotifierEntity)
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrencyCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Unit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrencyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ForexSelling)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ForexBuying)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BanknoteBuying)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BanknoteSelling)
+        </th>
+       
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.CurrencyCode)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Unit)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrencyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ForexSelling)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ForexBuying)
+            </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.BanknoteBuying)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.BanknoteSelling)
+            </th>
+        </tr>
+    }
+
+</table>
+ 

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SqlServerDataAccess.Models.Currency>
+
+    @{
+        ViewBag.Title = "Exchange Rates";
+    }
+
+    <h2>Exchange Rates</h2>
+
+    <div id="tbCurrencies">
+        @Html.Partial("IndexPartial", Model)
+    </div>
+
+    @section scripts {
+
+        <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+        <script src="~/signalr/hubs"></script>
+
+        <script type="text/javascript">
+            var signalRHubInitialized = false;
+
+            $(function () {
+                InitializeSignalRHubStore();
+            });
+
+            function InitializeSignalRHubStore() {
+         
+                if (signalRHubInitialized)
+                    return;
+
+                try {
+                    var clientHub = $.connection.currencyHub;
+                 
+                    clientHub.client.broadcastMessage = function (message) {
+                        if (message === "Refresh")
+                            ReloadIndexPartial();
+                    };
+
+                    $.connection.hub.start().done(function () {
+                        clientHub.server.initialize($("#NotifierEntity").val());
+                        signalRHubInitialized = true;
+                    });
+
+                } catch (err) {
+                    signalRHubInitialized = false;
+                }
+            };
+
+            function ReloadIndexPartial() {
+
+                $.post('@(Url.Action("IndexPartial", "Home", null, Request.Url.Scheme))')
+                    .done(function (response) {
+                        $("#tbCurrencies").html(response)
+                        if (!signalRHubInitialized)
+                            InitializeSignalRHubStore();
+                    });
+            };
+        </script>
+    }
+
